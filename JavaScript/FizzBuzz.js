@@ -1,7 +1,15 @@
 /**
  * @param {number} n
  * @return {string[]}
+ *
  */
+ 
+/**
+  * Takeaway:
+  * 1. the if clause if VERY expensive (time-wise).
+  *
+  */
+
 var fizzBuzz = function(n) {
     var list = []
 
