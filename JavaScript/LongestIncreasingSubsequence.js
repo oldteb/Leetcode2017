@@ -2,6 +2,15 @@
  * @param {number[]} nums
  * @return {number}
  */
+ // take away
+ // It is obviously has a DP solution:
+ //   a) overlapping subproblems
+ //   b) optimal substructure
+ // Recursive equation:
+ // Let L(i) be the len of max increasing subsequence from [0~i]
+ // L(i) = a) 1 + max(L(x)), where 0<= x < i
+  //       b) 1            , if no such x exists.
+
 var lengthOfLIS = function(nums) {
     if(nums == null || nums.length == 0)
         return 0
@@ -33,13 +42,12 @@ var lengthOfLIS = function(nums) {
         })
 
         buf[i] = max + 1
-        console.log(buf)
     }
 
+    let max = 0
+    for(let i = 0; i < buf.length; i++){
+        max = Math.max(buf[i], max)
+    }
 
-
-    return buf[0]
+    return max + 1
 };
-
-var list = [10,9,2,5,3,7,101,18]
-lengthOfLIS(list)
