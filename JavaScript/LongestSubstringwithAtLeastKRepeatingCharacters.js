@@ -3,6 +3,11 @@
  * @param {number} k
  * @return {number}
  */
+// take away
+// 1. when there is no thoughts, use brute force to solve the problem (as solution 1)
+// 2. try to think out of box if no dp solution found
+// 3.
+
 var longestSubstring = function(s, k) {
     if(s == null || s.length == 0 || k < 0){
         return 0
@@ -12,19 +17,14 @@ var longestSubstring = function(s, k) {
         return 0
     }
 
-    console.log(s)
-
+    // solution 2: diveide & conquer O(nlog(n))
     let maxLen = 0
     var map = new Map()
-
-    // solution 2: diveide & conquer
     for(let i = 0; i < s.length; i++){
         let c = s.charAt(i)
         let freq = map.has(c) ? map.get(c)+1 : 1
         map.set(c, freq)
     }
-        console.log(map)
-
     for(let i = 0; i < s.length; i++){
         let c = s.charAt(i)
         if(map.get(c) < k){
@@ -39,7 +39,7 @@ var longestSubstring = function(s, k) {
 
     return s.length
 
-    // solution 1: brute force O(n2)/O(n)
+    // solution 1: brute force O(n^2)/O(n)
     // var map1 = new Map()
     // var map2 = new Map()
     // let maxLen = 0
@@ -66,6 +66,3 @@ var longestSubstring = function(s, k) {
 
     return maxLen
 };
-
-
-console.log(longestSubstring("bbaaacbd",3))
