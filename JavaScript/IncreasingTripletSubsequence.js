@@ -6,46 +6,35 @@
 // no matter how hard the problem is
 // with logical analysis process
 // the problme can be solved
+//
 var increasingTriplet = function(nums) {
     if(nums == null || nums.length == 0){
         return false
     }
 
-    let sm = nums[0]
-    let md = 0
-    let smIdx = 0
-    let mdIdx = -1
+    // update implementation at 04/21/2017
+    let midFound = 0
+    let midVal = nums[0]  // maintain local minimum tuple
+    let lowVal = nums[0]  // low val is stored for construct new minimum tuple
 
-    // find the first increasing tuple in array
     for(let i = 1; i < nums.length; i++){
-        if(nums[i] > sm){
-            md = nums[i]
-            mdIdx = i
-            break
+        if(midFound == 0){
+            if(nums[i] <= lowVal)
+                lowVal = nums[i]
+            else{
+                midVal = nums[i]
+                midFound = 1
+            }
         }
-        sm = nums[i]
-        smIdx = i
-    }
+        else{
+            if(nums[i] > midVal)  return true
+            else if(nums[i] > lowVal){
+                midVal = nums[i]
+            }
+            else
+                lowVal = nums[i]
+        }
 
-    if(mdIdx == -1)
-        return false
-
-    // for each step
-    // always maintain the local optimal: the "minimum" increasing tuple
-    // maintain the local minimum value to update the local optimal
-    let minVal = sm
-    for(let i = mdIdx+1; i < nums.length; i++){
-        if(nums[i] > md)  return true
-        else if(nums[i] < md && nums[i] > sm){
-            md = nums[i]
-        }
-        else if(nums[i] > minVal){
-            sm = minVal
-            md = nums[i]
-        }
-        else if(nums[i] < minVal){
-            minVal = nums[i]
-        }
     }
 
 

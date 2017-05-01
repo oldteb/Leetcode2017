@@ -11,43 +11,52 @@
  // L(i) = a) 1 + max(L(x)), where 0<= x < i
   //       b) 1            , if no such x exists.
 
-var lengthOfLIS = function(nums) {
-    if(nums == null || nums.length == 0)
-        return 0
+  var lengthOfLIS = function(nums) {
+      if(nums == null || nums.length == 0)
+          return 0
 
-    var nextArr = []
-    for(let i = 0;i < nums.length; i++){
-        var tmp = []
-        for(let j = i+1; j < nums.length; j++){
-            if(nums[j] > nums[i])
-                tmp.push(j)
-        }
-        nextArr[i] = tmp
-    }
+      // // solution 1: naive DP (O(n^2))
+      // // buf[k] records the len of longest subsequence found in [0..k-1],
+      // // which ends with nums[k]
+      // var buf = Array(nums.length).fill(1)
+      // let rst = 1
+      // for(let i = 1; i < nums.length; i++){
+      //     let maxLen = 0
+      //     for(let j = 0; j < i; j++){
+      //         if(nums[j] < nums[i] && buf[j] > maxLen)
+      //             maxLen = buf[j]
+      //     }
+      //     buf[i] = maxLen + 1
+      //     rst = Math.max(rst, buf[i])  // maintaint the largest among buf[]
+      // }
 
-    var buf = []
-    for(let i=0; i < nums.length; i++){
-        buf[i] = 0
-    }
+      // solution 2: DP + BS (O(nlgn))
+      //  So dp[i] is the minimum value a subsequence of length i+1 might end with.
+      var buf = Array(nums.length).fill(0)
+      let len = 0
+      for(let i = 0; i < nums.length; i++){
+          let insertPoint = myBinarySearch(buf, len, nums[i])
+          buf[insertPoint] = nums[i]
+          if(len == insertPoint)
+              len++
+      }
 
-    for(let i = nums.length - 2; i >= 0; i--){
-        var tmp = nextArr[i]
-        if(tmp.length == 0)
-          continue
+      return len
+  };
 
-        let max = Number.MIN_SAFE_INTEGER
-        tmp.forEach(function(e){
-            if(buf[e] > max)
-                max = buf[e]
-        })
+  var myBinarySearch = function(buf, len, target){
+      if(len <= 0 || buf[len-1] < target)
+          return len
 
-        buf[i] = max + 1
-    }
+      let left = 0
+      let right = len-1
+      while(left < right){
+          let mid = Math.floor((left+right)/2)
+          if(target <= buf[mid])
+              right = mid
+          else
+              left = mid + 1
+      }
 
-    let max = 0
-    for(let i = 0; i < buf.length; i++){
-        max = Math.max(buf[i], max)
-    }
-
-    return max + 1
-};
+      return left
+  };
