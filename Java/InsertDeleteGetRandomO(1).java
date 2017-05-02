@@ -1,60 +1,48 @@
 public class RandomizedSet {
-    Map<Integer, Integer> valMap = new HashMap<Integer, Integer>();
-    Map<Integer, Integer> idxMap = new HashMap<Integer, Integer>();
-    Random rand = null;
+
+    Map<Integer, Integer> elemIdxMap;
+    List<Integer> list;
 
     /** Initialize your data structure here. */
     public RandomizedSet() {
-        rand = new Random(System.currentTimeMillis());
+        elemIdxMap = new HashMap<Integer, Integer>();
+        list = new ArrayList<Integer>();
     }
 
     /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
     public boolean insert(int val) {
-        if(valMap.containsKey(val)){
-            return false;
+        if(!elemIdxMap.containsKey(val)){
+            list.add(val);
+            elemIdxMap.put(val, list.size()-1);
+            return true;
         }
-
-        int idx = valMap.size();
-        valMap.put(val, idx);
-        idxMap.put(idx, val);
-
-        return true;
+        else
+            return false;
     }
 
     /** Removes a value from the set. Returns true if the set contained the specified element. */
     public boolean remove(int val) {
-        if(!valMap.containsKey(val)){
-            return false;
-        }
+        if(elemIdxMap.containsKey(val)){
+            if(elemIdxMap.get(val) != list.size()-1){
+                int spot = elemIdxMap.get(val);
+                list.set(spot, list.get(list.size()-1));
+                elemIdxMap.put(list.get(spot), spot);
+            }
 
-        int idx = valMap.get(val);
-        valMap.remove(val);
-        idxMap.remove(idx);
-
-        if(!idxMap.containsKey(valMap.size())){
+            elemIdxMap.remove(val);
+            list.remove((int)(list.size()-1));
             return true;
         }
-
-        int tmpVal = idxMap.get(valMap.size());
-        idxMap.remove(valMap.size());
-        idxMap.put(idx, tmpVal);
-        valMap.put(tmpVal, idx);
-
-        return true;
+        else
+            return false;
     }
 
     /** Get a random element from the set. */
     public int getRandom() {
-        if(valMap.size()==0){
-            return -1;
-        }
-
-        if(valMap.size()==1){
-            return idxMap.get(0);
-        }
-
-        return idxMap.get(new Random().nextInt(valMap.size()));
+        int randIdx = new Random().nextInt(list.size());
+        return list.get(randIdx);
     }
+
 }
 
 /**
