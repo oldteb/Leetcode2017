@@ -10,10 +10,14 @@
  * @param {RandomListNode} head
  * @return {RandomListNode}
  */
- // performace: O(n)/O(n)
+
+ // solution 1: 2-pass O(n)/O(n): Map old node to new node
+ // solution 2: 1-pass O(n)/O(n): Map old node to new node, constrcut new node when not existed in map
+ // solution 3: O(n)/O(1): old node next point to new node, new node random point to old node
 var copyRandomList = function(head) {
     if(head == null)  return null
 
+    // solution 1
     var dummy = new RandomListNode(0)
     var tail = dummy
     var current = head
