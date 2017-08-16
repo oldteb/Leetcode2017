@@ -1,3 +1,18 @@
+/*
+-- Take Away --
+
+the Hint: all possible combinations
+
+the Categories: limit size selection
+
+Performance = n * (2^4 + 2^6 + ?)
+
+Improvements: 
+For fixed size input, we can try to find all possible conbination reversely.
+Iterate from 0:00 to 11:59, from each one, check if the overall bits is n.
+
+*/
+
 public class Solution {
     public List<String> readBinaryWatch(int num) {
         List<String> rst0 = new ArrayList<String>();
